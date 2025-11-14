@@ -1,0 +1,23 @@
+# Lightstep Configuration
+# Sign up: https://lightstep.com/
+# Get access token from: Settings → Access Tokens
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+
+exporters:
+  traces:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://ingest.lightstep.com:443/traces/otlp/v1"
+      headers:
+        lightstep-access-token: "YOUR_ACCESS_TOKEN_HERE"
+      timeout_ms: 10000
+
+  metrics:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://ingest.lightstep.com:443/metrics/otlp/v1"
+      headers:
+        lightstep-access-token: "YOUR_ACCESS_TOKEN_HERE"

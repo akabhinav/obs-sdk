@@ -1,0 +1,25 @@
+# Splunk Observability Cloud (SignalFx) Configuration
+# Sign up: https://www.splunk.com/en_us/products/observability.html
+# Get token from: Settings → Access Tokens
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+
+exporters:
+  metrics:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://ingest.YOUR_REALM.signalfx.com/v2/datapoint/otlp"
+      headers:
+        X-SF-Token: "YOUR_ACCESS_TOKEN"
+
+  traces:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://ingest.YOUR_REALM.signalfx.com/v2/trace/otlp"
+      headers:
+        X-SF-Token: "YOUR_ACCESS_TOKEN"
+
+# Common realms: us0, us1, eu0, ap0
+# Replace YOUR_REALM with your actual realm

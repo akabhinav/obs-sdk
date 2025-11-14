@@ -1,0 +1,31 @@
+# Sumo Logic Configuration
+# Sign up: https://www.sumologic.com/
+# Get HTTP Source URL from: Manage Data → Collection
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+
+exporters:
+  traces:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://collectors.YOUR_DEPLOYMENT.sumologic.com/receiver/v1/traces"
+      headers:
+        X-Sumo-Category: "my-service/traces"
+
+  metrics:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://collectors.YOUR_DEPLOYMENT.sumologic.com/receiver/v1/metrics"
+      headers:
+        X-Sumo-Category: "my-service/metrics"
+
+  logs:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://collectors.YOUR_DEPLOYMENT.sumologic.com/receiver/v1/logs"
+      headers:
+        X-Sumo-Category: "my-service/logs"
+
+# Common deployments: us1, us2, eu, au, jp, ca

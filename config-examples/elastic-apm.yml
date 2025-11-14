@@ -1,0 +1,35 @@
+# Elastic APM Configuration
+# Options:
+# 1. Cloud: https://cloud.elastic.co/
+# 2. Local: Docker - see docker-compose-elastic.yml
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+
+exporters:
+  # For Elastic Cloud
+  traces:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://YOUR_CLOUD_ID.apm.YOUR_REGION.cloud.es.io:443"
+      headers:
+        Authorization: "Bearer YOUR_SECRET_TOKEN"
+
+  metrics:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://YOUR_CLOUD_ID.apm.YOUR_REGION.cloud.es.io:443"
+      headers:
+        Authorization: "Bearer YOUR_SECRET_TOKEN"
+
+  # For local Docker
+  # traces:
+  #   - type: "otlp"
+  #     enabled: true
+  #     endpoint: "http://localhost:8200"
+
+  # metrics:
+  #   - type: "otlp"
+  #     enabled: true
+  #     endpoint: "http://localhost:8200"

@@ -1,0 +1,35 @@
+# Google Cloud Operations (Stackdriver) Configuration
+# Requires: GCP account and project
+# Authentication: Use Application Default Credentials or API key
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+  environment: "production"
+
+exporters:
+  traces:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://cloudtrace.googleapis.com/v2/projects/YOUR_PROJECT_ID/traces:batchWrite"
+      # Authentication via Application Default Credentials
+      # or provide API key in headers:
+      # headers:
+      #   X-Goog-Api-Key: "YOUR_API_KEY"
+
+  metrics:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://monitoring.googleapis.com/v3/projects/YOUR_PROJECT_ID/timeSeries:createService"
+      # headers:
+      #   X-Goog-Api-Key: "YOUR_API_KEY"
+
+  logs:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://logging.googleapis.com/v2/entries:write"
+      # headers:
+      #   X-Goog-Api-Key: "YOUR_API_KEY"
+
+# Note: For production, use Google Cloud SDK authentication
+# gcloud auth application-default login

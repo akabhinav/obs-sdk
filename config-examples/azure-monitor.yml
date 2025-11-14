@@ -1,0 +1,36 @@
+# Azure Monitor / Application Insights Configuration
+# Requires: Azure account and Application Insights resource
+# Get connection string from: Azure Portal → Application Insights → Overview
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+  environment: "production"
+
+exporters:
+  metrics:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://dc.applicationinsights.azure.com/v2.1/track"
+      headers:
+        # Use instrumentation key or connection string
+        Authorization: "InstrumentationKey=YOUR_INSTRUMENTATION_KEY"
+
+  traces:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://dc.applicationinsights.azure.com/v2.1/track"
+      headers:
+        Authorization: "InstrumentationKey=YOUR_INSTRUMENTATION_KEY"
+
+  logs:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://dc.applicationinsights.azure.com/v2.1/track"
+      headers:
+        Authorization: "InstrumentationKey=YOUR_INSTRUMENTATION_KEY"
+
+# Alternative: Use connection string
+# endpoint: "https://dc.services.visualstudio.com/v2/track"
+# headers:
+#   Connection-String: "InstrumentationKey=...;IngestionEndpoint=..."

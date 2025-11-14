@@ -1,0 +1,33 @@
+# Honeycomb Configuration
+# Sign up: https://www.honeycomb.io/ (FREE tier)
+# Get API key from: Team Settings → API Keys
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+  environment: "production"
+
+exporters:
+  metrics:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://api.honeycomb.io/v1/metrics"
+      headers:
+        x-honeycomb-team: "YOUR_API_KEY_HERE"
+        x-honeycomb-dataset: "my-service-metrics"
+
+  traces:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://api.honeycomb.io/v1/traces"
+      headers:
+        x-honeycomb-team: "YOUR_API_KEY_HERE"
+        x-honeycomb-dataset: "my-service-traces"
+
+  logs:
+    - type: "otlp"
+      enabled: true
+      endpoint: "https://api.honeycomb.io/v1/logs"
+      headers:
+        x-honeycomb-team: "YOUR_API_KEY_HERE"
+        x-honeycomb-dataset: "my-service-logs"
