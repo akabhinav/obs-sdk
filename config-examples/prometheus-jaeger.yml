@@ -1,0 +1,24 @@
+# Prometheus + Jaeger Configuration
+# Classic open-source observability stack
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+
+exporters:
+  metrics:
+    # Prometheus for metrics
+    - type: "prometheus"
+      enabled: true
+      endpoint: "http://prometheus-pushgateway:9091/metrics/job/my-service"
+
+  traces:
+    # Jaeger for distributed tracing
+    - type: "jaeger"
+      enabled: true
+      endpoint: "http://jaeger-collector:14268/api/traces"
+
+  logs:
+    # Console for logs (or use Loki)
+    - type: "console"
+      enabled: true

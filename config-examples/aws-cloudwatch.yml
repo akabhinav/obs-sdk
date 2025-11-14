@@ -1,0 +1,32 @@
+# AWS CloudWatch Configuration
+# Native AWS observability
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+  environment: "production"
+  attributes:
+    aws_region: "us-east-1"
+    aws_account: "123456789"
+
+exporters:
+  metrics:
+    - type: "cloudwatch"
+      enabled: true
+      config:
+        region: "us-east-1"
+        namespace: "MyApplication/Metrics"
+
+  traces:
+    # AWS X-Ray via OTLP
+    - type: "otlp"
+      enabled: true
+      endpoint: "http://localhost:4318/v1/traces"  # X-Ray collector
+
+  logs:
+    # CloudWatch Logs
+    - type: "cloudwatch"
+      enabled: true
+      config:
+        region: "us-east-1"
+        log_group: "/aws/application/my-service"

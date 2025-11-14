@@ -1,0 +1,31 @@
+# Grafana Cloud Configuration
+# Complete observability with Grafana Cloud
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+  environment: "production"
+
+exporters:
+  metrics:
+    - type: "grafana-cloud"
+      enabled: true
+      endpoint: "https://otlp-gateway-prod-us-central-0.grafana.net/otlp/v1/metrics"
+      headers:
+        Authorization: "Basic <base64-encoded-instance-id:api-key>"
+      batch_size: 200
+      batch_timeout_ms: 10000
+
+  traces:
+    - type: "grafana-cloud"
+      enabled: true
+      endpoint: "https://otlp-gateway-prod-us-central-0.grafana.net/otlp/v1/traces"
+      headers:
+        Authorization: "Basic <base64-encoded-instance-id:api-key>"
+
+  logs:
+    - type: "grafana-cloud"
+      enabled: true
+      endpoint: "https://otlp-gateway-prod-us-central-0.grafana.net/otlp/v1/logs"
+      headers:
+        Authorization: "Basic <base64-encoded-instance-id:api-key>"

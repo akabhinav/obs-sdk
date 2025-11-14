@@ -1,0 +1,47 @@
+# Multi-Backend Configuration
+# Send to multiple backends simultaneously!
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+
+exporters:
+  metrics:
+    # Console for local debugging
+    - type: "console"
+      enabled: true
+
+    # Prometheus for metrics storage
+    - type: "prometheus"
+      enabled: true
+      endpoint: "http://prometheus-pushgateway:9091/metrics/job/my-service"
+
+    # Grafana Cloud for visualization
+    - type: "grafana-cloud"
+      enabled: true
+      endpoint: "https://otlp-gateway-prod-us-central-0.grafana.net/otlp/v1/metrics"
+      headers:
+        Authorization: "Basic your-credentials"
+
+    # Datadog for APM
+    - type: "datadog"
+      enabled: true
+      endpoint: "https://api.datadoghq.com"
+      headers:
+        DD-API-KEY: "your-api-key"
+
+  traces:
+    # Multiple trace backends
+    - type: "jaeger"
+      enabled: true
+      endpoint: "http://jaeger:14268/api/traces"
+
+    - type: "zipkin"
+      enabled: true
+      endpoint: "http://zipkin:9411/api/v2/spans"
+
+    - type: "grafana-cloud"
+      enabled: true
+      endpoint: "https://otlp-gateway-prod-us-central-0.grafana.net/otlp/v1/traces"
+      headers:
+        Authorization: "Basic your-credentials"

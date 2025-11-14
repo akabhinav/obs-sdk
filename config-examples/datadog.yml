@@ -1,0 +1,31 @@
+# Datadog Configuration
+# Full-stack monitoring with Datadog
+
+service:
+  name: "my-service"
+  version: "1.0.0"
+  environment: "production"
+
+exporters:
+  metrics:
+    - type: "datadog"
+      enabled: true
+      endpoint: "https://api.datadoghq.com/api/v2/series"
+      headers:
+        DD-API-KEY: "your-datadog-api-key"
+        DD-APPLICATION-KEY: "your-app-key"
+      batch_size: 100
+
+  traces:
+    - type: "datadog"
+      enabled: true
+      endpoint: "https://trace.agent.datadoghq.com/v0.4/traces"
+      headers:
+        DD-API-KEY: "your-datadog-api-key"
+
+  logs:
+    - type: "datadog"
+      enabled: true
+      endpoint: "https://http-intake.logs.datadoghq.com/v1/input"
+      headers:
+        DD-API-KEY: "your-datadog-api-key"

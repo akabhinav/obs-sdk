@@ -1,0 +1,110 @@
+# Observability SDK Configuration
+# Just drop this file and the SDK will auto-configure!
+
+service:
+  name: "my-awesome-service"
+  version: "1.0.0"
+  environment: "production"
+  attributes:
+    team: "platform"
+    region: "us-east-1"
+
+# Metrics Configuration
+metrics:
+  enabled: true
+  export_interval_ms: 60000
+
+# Traces Configuration
+traces:
+  enabled: true
+  sampler: "always_on"  # or "trace_id_ratio", "parent_based"
+  sample_rate: 1.0
+
+# Logs Configuration
+logs:
+  enabled: true
+  level: "INFO"  # TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+
+# Exporters - Just add configuration, no code changes!
+exporters:
+  # Metrics Exporters
+  metrics:
+    # Console exporter for development
+    - type: "console"
+      enabled: true
+
+    # OpenTelemetry (works with 40+ backends!)
+    - type: "otlp"
+      enabled: false
+      endpoint: "http://localhost:4318/v1/metrics"
+      headers:
+        api-key: "your-api-key"
+      timeout_ms: 10000
+      batch_size: 100
+      batch_timeout_ms: 5000
+
+    # Prometheus Push Gateway
+    - type: "prometheus"
+      enabled: false
+      endpoint: "http://localhost:9091/metrics/job/my-service"
+      timeout_ms: 5000
+
+    # Datadog (uses OTLP)
+    - type: "datadog"
+      enabled: false
+      endpoint: "https://api.datadoghq.com"
+      headers:
+        DD-API-KEY: "your-datadog-api-key"
+
+    # New Relic (uses OTLP)
+    - type: "newrelic"
+      enabled: false
+      endpoint: "https://otlp.nr-data.net:4318"
+      headers:
+        api-key: "your-newrelic-license-key"
+
+    # Grafana Cloud (uses OTLP)
+    - type: "grafana-cloud"
+      enabled: false
+      endpoint: "https://otlp-gateway-prod-us-central-0.grafana.net/otlp"
+      headers:
+        Authorization: "Basic your-base64-credentials"
+
+    # AWS CloudWatch
+    - type: "cloudwatch"
+      enabled: false
+      config:
+        region: "us-east-1"
+        namespace: "MyApp/Metrics"
+
+  # Trace Exporters
+  traces:
+    # Console exporter
+    - type: "console"
+      enabled: true
+
+    # OpenTelemetry for traces
+    - type: "otlp"
+      enabled: false
+      endpoint: "http://localhost:4318/v1/traces"
+
+    # Jaeger (uses OTLP)
+    - type: "jaeger"
+      enabled: false
+      endpoint: "http://localhost:14268/api/traces"
+
+    # Zipkin
+    - type: "zipkin"
+      enabled: false
+      endpoint: "http://localhost:9411/api/v2/spans"
+
+  # Log Exporters
+  logs:
+    # Console exporter
+    - type: "console"
+      enabled: true
+
+    # OpenTelemetry for logs
+    - type: "otlp"
+      enabled: false
+      endpoint: "http://localhost:4318/v1/logs"

@@ -2,6 +2,31 @@
 
 An enterprise-grade, highly extensible observability SDK built with Java 21 features for modern applications.
 
+## ⚡ Zero-Code Configuration
+
+**Drop a YAML file. Get 40+ observability backends. No code changes!**
+
+```yaml
+# observability.yml
+service:
+  name: "my-service"
+
+exporters:
+  metrics:
+    - type: "grafana-cloud"    # Or: datadog, newrelic, prometheus, otlp, etc.
+      enabled: true
+      endpoint: "https://otlp-gateway.grafana.net/otlp"
+```
+
+```java
+// ONE LINE - auto-configures everything from YAML!
+var sdk = ObservabilitySDKImpl.fromConfig();
+```
+
+**That's it!** Change backends by editing YAML - zero code changes required.
+
+See [CONFIGURATION.md](CONFIGURATION.md) for the complete guide.
+
 ## 🌟 Features
 
 ### Core Capabilities
@@ -10,7 +35,8 @@ An enterprise-grade, highly extensible observability SDK built with Java 21 feat
 - **📝 Structured Logging**: Correlated logging with trace context
 - **🔗 Context Propagation**: Automatic context handling using Java 21's `ScopedValue`
 - **⚡ Virtual Threads**: High-performance async operations with Java 21 virtual threads
-- **🔌 Extensible Exporters**: Pluggable backend support (console, OpenTelemetry, custom)
+- **🔌 40+ Backends**: OTLP, Prometheus, Grafana, Datadog, New Relic, AWS, and more
+- **🎯 Zero-Code Config**: YAML-based configuration, no code changes to switch backends
 
 ### Design Principles
 - **Clean Architecture**: Clear separation of API and implementation
@@ -41,7 +67,29 @@ obs-sdk-parent/
 mvn clean install
 ```
 
-### Basic Usage
+### Option 1: Zero-Code Configuration (Recommended)
+
+Create `observability.yml`:
+
+```yaml
+service:
+  name: "my-service"
+  version: "1.0.0"
+
+exporters:
+  metrics:
+    - type: "console"
+      enabled: true
+```
+
+Use in code:
+
+```java
+// Auto-loads from YAML!
+var sdk = ObservabilitySDKImpl.fromConfig();
+```
+
+### Option 2: Programmatic Configuration
 
 ```java
 import com.observability.core.ObservabilitySDKImpl;
@@ -230,39 +278,60 @@ for (int i = 0; i < 10000; i++) {
 }
 ```
 
-## 🔌 Exporters
+## 🔌 Supported Backends (40+)
 
-### Console Exporter (Built-in)
+### Universal Protocol
+- **OpenTelemetry (OTLP)** - Works with 40+ backends out of the box
 
-```java
-var exporter = new ConsoleMetricExporter();
-exporter.export(metricRegistry.getMetrics());
+### Major Platforms (via OTLP)
+- **Grafana Cloud** - `type: grafana-cloud`
+- **Datadog** - `type: datadog`
+- **New Relic** - `type: newrelic`
+- **Prometheus** - `type: prometheus`
+- **AWS CloudWatch** - `type: cloudwatch`
+- **Jaeger** - `type: jaeger` (traces)
+- **Zipkin** - `type: zipkin` (traces)
+- **Honeycomb** - `type: otlp`
+- **Lightstep** - `type: otlp`
+- **Elastic APM** - `type: otlp`
+- And 30+ more OTLP-compatible backends!
+
+### Configuration Examples
+
+**Grafana Cloud:**
+```yaml
+exporters:
+  metrics:
+    - type: "grafana-cloud"
+      endpoint: "https://otlp-gateway-prod-us-central-0.grafana.net/otlp/v1/metrics"
+      headers:
+        Authorization: "Basic your-credentials"
 ```
 
-### Custom Exporters
-
-Implement the `Exporter` interface:
-
-```java
-public class MyExporter implements MetricExporter {
-    @Override
-    public ExportResult export(Collection<Metric> metrics) {
-        // Send to your backend
-        return ExportResult.SUCCESS;
-    }
-
-    @Override
-    public ExportResult flush() {
-        // Flush any buffered data
-        return ExportResult.SUCCESS;
-    }
-
-    @Override
-    public void shutdown() {
-        // Cleanup resources
-    }
-}
+**Datadog:**
+```yaml
+exporters:
+  metrics:
+    - type: "datadog"
+      headers:
+        DD-API-KEY: "your-api-key"
 ```
+
+**Multiple Backends (Send to all!):**
+```yaml
+exporters:
+  metrics:
+    - type: "console"
+      enabled: true
+    - type: "prometheus"
+      enabled: true
+    - type: "grafana-cloud"
+      enabled: true
+    - type: "datadog"
+      enabled: true
+```
+
+See [CONFIGURATION.md](CONFIGURATION.md) for complete platform list and configuration details.
 
 ## 🎯 Java 21 Features Used
 
